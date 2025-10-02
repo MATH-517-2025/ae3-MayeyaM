@@ -1,4 +1,5 @@
 ---
+sample_---
 title: "MATH-517: Assignment 3"
 author: "Philipp Mayer"
 date: '2025-09-03'
@@ -30,3 +31,71 @@ The code should not appear in the PDF report, unless there is a specific reason 
 # The programming language can be changed to Python or Julia
 
 ```
+
+**Structure and details:**
+
+[Aim of the simulation study:]{.underline}
+
+The goal is to observe the impact of various parameters on the estimation of the IMSE-optimal bandwith $h_{IMSE}, \sigma^2$ and $\theta_22$. In particular how it varies with respect to
+
+-   various values (combinations) of the $\operatorname{Beta}$ function, $\alpha,\beta>0$ (see below)
+
+-   various values (combinations) of sample size $n$ and block size / number of blocks $N$ (see below)
+
+[Fixed quantities:]{.underline}
+
+-   $\alpha,\beta>0$ are the parameters of the $\operatorname{Beta}$ distribution, they're are usually named `alpha` and `beta` in the code. We have a sample size $n$ and a number of blocks $N$, they're usually denoted descriptively, for example `sample_size` or `size` and `number_of_blocks`. Note that in the README, we consider the size of the blocks instead of the number \[???????????????????? what do i do s??????????????????????????\]
+
+-   ADD IF NECESSARY
+
+[Code architecture:]{.underline}
+
+Technical functions are located in a file `functions.py` with usual alias `fct`. There, we have the following functions:
+
+-   `generate_sample` takes input `alpha, beta, n_samples, sigma_2` which respectively represent $\alpha$, $\beta$, the number of samples $n$ and the variance of the error $\epsilon$, $\sigma^2$.
+
+-   `estimate_parameters` ADD
+
+-   `estimate_sigma_theta` ADD
+
+-   `est_h_IMSE` takes input `sigma_2_hat, theta_22, size` as inputs which respectively represent $\hat\sigma^2$, $\hat\theta_{22}$ and the sample size $n$. It returns $h_{IMSE}$ as given in the README.
+
+-   `simulate` ADD
+
+The plotting functions are accessible through a file called `plot_results.py`. There, one can use any of the functions below:
+
+-   `plot_simple_fit` ADD
+
+-   `plot_alpha_beta_impact` ADD
+
+-   `plot_sample_blocks_impact` ADD
+
+[Additional quantities:]{.underline}
+
+-   `covariate, response` ADD
+
+-   THE RETURN FUNCTION
+
+[How to simply plot results:]{.underline}
+
+To call them, use the console with one of the following keywords `key`$\in\{$ `simple_plot, alpha_beta_impact,sample_blocks_impact` $\}$ and call as follows: `py plot_results.py key parameter1 parameter2 parameter3 ...`
+
+where `parameter1 parameter2 ...` are the functions parameters in order as mentioned above.
+
+**Findings and reports:**
+
+![Visual plot of bandwith impact](simple_plot_bandwith.png)
+
+sd
+
+![Impact of the choices of alpha and beta on estimations](alpha_beta_impact_colormap.png)
+
+sd
+
+![Impact of sample size and number of blocks on estimations (color map)](sample_size_block_number_impact_colormap.png)
+
+sd
+
+![Estimations against sample size with Mallow-selected block number / size](plot_sample_size_mallow.png)
+
+**CAREFUL: SIZE = NUMBER OF BLOCKS // SAMPLE SIZE approximately**
