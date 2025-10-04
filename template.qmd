@@ -9,7 +9,68 @@ editor: visual
 
 ## Theoretical exercise
 
-Your answer goes here
+Define the quadratic form
+
+$$\mathcal Q(\beta)=\sum_{i=1}^nK\left(\frac{X_i-x}{h}\right)(Y_i-\beta_0-\beta_1(X_i-x))^2=(Y-X\beta)^\text{T}W(Y-X\beta),$$
+
+where $W=\operatorname{Diag}\left(W_1,...,W_n\right)= \operatorname{Diag}\left(K\left(\frac{X_1-x}{h}\right),...,K\left(\frac{X_n-x}{h}\right)\right).$
+
+Using matrix calculus, we have that $\frac{\partial\mathcal Q(\beta)}{\partial\beta}=2X^\text{T}WX\beta-2X^\text{T}WY$ so that the normal equations are given by $X^\text{T} WX\hat\beta = X^\text{T}WY$. Assuming that $X^\text{T}WX$ is invertible, we immediately obtain from the normal equations that $\hat\beta = \left(X^\text{T}WX\right)^{-1}X^\text{T}WY$.
+
+We will start off by compute some terms, $X^\text{T}WX$ and $X^\text{T}WY$ separately.
+
+$$
+X^\text{T}WX =\begin{bmatrix} 1 & \cdots & 1\\ X_1-x & \cdots & X_n-x \end{bmatrix}\begin{bmatrix} W_1 &  &  \\  & \ddots &  \\  &  & W_n \end{bmatrix} \begin{bmatrix} 1 & X_1-x\\ \vdots & \vdots \\ 1 & X_n-x\end{bmatrix} = \begin{bmatrix} 1 & \cdots & 1\\ X_1-x & \cdots & X_n-x\end{bmatrix} \begin{bmatrix} W_1 & W_1(X_1-x)\\ \vdots & \vdots \\ W_n & W_n(X_n-x)\end{bmatrix}
+
+such that
+
+$$X^\text{T}WX = \begin{bmatrix}\sum_{i=1}^n W_i & \sum_{i=1}^n W_i(X_i-x)\\ \sum_{i=1}^n W_i(X_i-x) & \sum_{i=1}^nW_i(X_i-x)^2 \end{bmatrix}$$
+
+Define $\tilde S_{n,k}(x):= nh S_{n,k}(x)$ for $k=0,1,2$, where $S_{n,k}(x)$ are defined as in the README. In view of this definition, $X^\text{T} WX = \begin{bmatrix} \tilde S_{n,0} & \tilde S_{n, 1} \\ \tilde S_{n,1} & \tilde S_{n,2}\end{bmatrix} = nh \begin{bmatrix} S_{n,0} & S_{n,1}\\ S_{n,1} & S_{n,2}\end{bmatrix}.$
+
+We now turn to $X^\text{T}WY$.
+
+$$
+X^\text{T}WY=\begin{bmatrix} 1 & \cdots & 1 \\ X_1-x & \cdots & X_n-x\end{bmatrix}\begin{bmatrix} W_1 & & \\ & \ddots & \\ & & W_n\end{bmatrix}\begin{bmatrix}Y_1\\ \vdots \\ Y_n\end{bmatrix} = \begin{bmatrix} W_1 & \cdots W_n \\ W_1(X_1-x) & \cdots & W_n(X_n-x)\end{bmatrix} \begin{bmatrix} Y_1\\ \vdots \\ Y_n\end{bmatrix} = \begin{bmatrix} \sum_{i=1}^nW_iY_i\\ \sum_{i=1}^n W_i(X_i-x)Y_i\end{bmatrix} 
+$$
+
+Defining $T_0 = \sum_{i=1}^n W_iY_i$ and $T_1 = \sum_{i=1}^n W_i(X_i-x)Y_i$, we have that $X^\text{T}WY = \begin{bmatrix} T_0 & T_1 \end{bmatrix}^\text{T}$.
+
+We now invert $X^\text{T}WX$. Since $X^\text{T}WX$ is a $2\times 2$ matrix, the inverse is
+
+$$
+\begin{bmatrix} \tilde S_{n,0} & \tilde S_{n,1} \\ \tilde S_{n,1} & \tilde S_{n,2}\end{bmatrix}^{-1}=\frac{1}{D}\begin{bmatrix} \tilde S_{n,2} & -\tilde S_{n,1} \\ -\tilde S_{n,1} & \tilde S_{n,2}\end{bmatrix}, \text{ where }\ D=\tilde S_{n,0}\tilde S_{n,2}-\tilde S_{n,1}^2\ \text{ is the determinent.}
+$$
+
+Recall that we are interested in $\hat\beta_0$ and in view of the above reasoning,
+
+$$\hat\beta = \frac{1}{D} \begin{bmatrix} \tilde S_{n,2} & - \tilde S_{n,1}\\ -\tilde S_{n,1} & \tilde S_{n,0}\end{bmatrix} \begin{bmatrix} T_0 \\ T_1 \end{bmatrix}\ \text{ such that }\ \hat\beta_0 = \frac{1}{D}\left(\tilde S_{n,2}T_0-\tilde S_{n,1}T_1\right)=\sum_{i=1}^n\frac{W_i\left(\tilde S_{n,2} - \tilde S_{n,1}(X_i-x)\right)}{D}Y_i$$
+
+Recall that $\tilde S_{n,k}=nhS_{n,k}$. It follows that $D=(nh)^2\left(S_{n,0}S_{n,2}-S_{n,1}^2\right)$. It immediately follows that
+
+$$
+\hat\beta_0 = \sum_{i=1}^n\frac{nh}{(nh)^2}\frac{W_i\left(S_{n,2}-S_{n,1}(X_i-x)\right)}{S_{n,0}S_{n,2}-S_{n,1}^2}Y_i=\sum_{i=1}^n\frac{1}{nh}\frac{W_i(S_{n,2}-S_{n,1}(X_i-x)}{S_{n,0}S_{n,2}-S_{n,1}^2}Y_i=\sum_{i=1}^nw_{n,i}Y_i,
+$$
+
+where $$w_{n,i}=w_{n,i}(x)=\frac{1}{nh}\frac{K\left(\frac{X_i-x}{h}\right)\left(S_{n,2}(x)-S_{n,1}(x)(X_i-x)\right)}{S_{n,0}(x)S_{n,2}(x)-S_{n,1}(x)^2}.$$
+
+With this result, we answer both question (1) and (2) at the same time.
+
+It remains to show that $\sum_{i=1}^n w_{n,i}(x)=1$. We proceed as follows:
+
+$$
+\sum_{i=1}^n w_{n,i}(x)=\frac{1}{nh}\sum_{i=1}^n\frac{W_i\left(S_{n,2}(x)-(X_i-x)S_{n,1}(x)\right)}{S_{n,0}(x)S_{n,2}(x)-S_{n,1}(x)^2}=\frac{1}{nh}\frac{S_{n,2}(x)}{S_{n,0}(x)S_{n,2}(x)-S_{n,1}(x)^2}\sum_{i=1}^nW_i-\frac{1}{nh}\frac{S_{n,1}(x)}{S_{n,0}(x)S_{n,2}(x)-S_{n,1}(x)^2}\sum_{i=1}^nW_i(X_i-x).
+$$
+
+In view of the definitions of $S_{n,0}(x)$ and $S_{n,1}(x)$, we obtain
+
+$$
+\sum_{i=1}^nw_{n,i}(x)=\frac{S_{n,2}(x)S_{n,0}(x)}{S_{n,0}(x)S_{n,2}(x)-S_{n,1}(x)^2}-\frac{S_{n,1}(x)^2}{S_{n,0}(x)S_{n,2}(x)-S_{n,1}(x)^2} = 1,
+$$
+
+which concludes the third (3) part of the exercise.
+
+This concludes the theoretical exercise.
 
 ## Practical exercise
 
@@ -36,7 +97,7 @@ The code should not appear in the PDF report, unless there is a specific reason 
 
 [Aim of the simulation study:]{.underline}
 
-The goal is to observe the impact of various parameters on the estimation of the IMSE-optimal bandwith $h_{IMSE}, \sigma^2$ and $\theta_22$. In particular how it varies with respect to
+The goal is to observe the impact of various parameters on the estimation of the IMSE-optimal bandwith $h_{IMSE}, \sigma^2$ and $\theta_{22}$. In particular how it varies with respect to
 
 -   various values (combinations) of the $\operatorname{Beta}$ function, $\alpha,\beta>0$ (see below)
 
