@@ -34,7 +34,7 @@ def plot_simple_fit(covariate, response, fixed_bandwith, sigma_2):
     beta_fct_opti = fct.estimate_parameters(covariate, response, fixed_bandwith, p=2)
     p = np.linspace(0, 1, 100)
     beta_values_fixed = beta_fct_opti(p)
-    plt.scatter(covariate, response, marker='o', facecolors='none', edgecolors='lightblue', alpha=0.5)
+    plt.scatter(covariate, response, marker='o', facecolors='none', edgecolors='lightblue', alpha=0.5, label="Samples")
     
     h_values = np.arange(0.01, 0.99, step=0.08)
     norm = plt.Normalize(vmin=h_values.min(), vmax=h_values.max())
@@ -197,7 +197,6 @@ def plot_sample_size_impact_mallow(alpha, beta, max_number_of_samples, step, err
         h_IMSE, sigma_2, theta_22 = fct.h_IMSE_Cp_optimized(covariate=covariate,
                                                     response=response,
                                                     number_of_samples=n,
-                                                    error_variance=error_variance,
                                                     max_number_of_blocks=max_number_of_blocks, 
                                                     default_bandwith=default_bandwith)
         
@@ -283,8 +282,8 @@ if __name__=="__main__":
         print("TASK: produce impact of alpha/beta on h_IMSE, est.variance, est.theta22")
         number_of_samples, error_variance, default_bandwith, number_of_blocks = int(ui[2]), float(ui[3]), float(ui[4]), int(ui[5])
 
-        alphas = np.arange(0.1, 10, step = 0.5) # alphas = np.arange(0.01, 10, step = 0.5)
-        betas = np.arange(0.1, 10, step = 0.5) # betas = np.arange(0.01, 10, step = 0.5)
+        alphas = np.arange(0.1, 10, step = 0.5) # alphas = np.arange(0.01, 5, step = 0.5), alphas = np.arange(0.01, 1, step = 0.01)
+        betas = np.arange(0.1, 10, step = 0.5) # betas = np.arange(0.01, 5, step = 0.5),  betas = np.arange(0.01, 1, step = 0.01))
 
         plot_alpha_beta_impact(alphas=alphas, 
                                betas=betas, 

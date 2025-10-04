@@ -15,7 +15,7 @@ def generate_sample(alpha, beta, n_samples, sigma_2=1):
     covariate = X
     return covariate, response
 
-def estimate_parameters(covariate, response, bandwith, p=1):
+def estimate_parameters(covariate, response, bandwith, p=1, reg= 1e-5):
     X = covariate
     Y = response
     h = bandwith
@@ -25,7 +25,6 @@ def estimate_parameters(covariate, response, bandwith, p=1):
         n = len(x_array)
         n_params = p + 1
         beta_x = np.empty((n, n_params))
-        reg = 1e-5
         
         # Precompute powers of X if p > 0
         #X_powers = np.column_stack([X**p_ for p_ in range(p + 1)])
@@ -238,7 +237,7 @@ def optimal_mallow(covariate, response, fixed_bandwith, max_N_blocks):
 
     return minimising_Cp_N_blocks
 
-def h_IMSE_Cp_optimized(covariate, response, number_of_samples, error_variance, default_bandwith, max_number_of_blocks):
+def h_IMSE_Cp_optimized(covariate, response, number_of_samples, default_bandwith, max_number_of_blocks):
     
     minimising_Cp_N_blocks = optimal_mallow(covariate, response, default_bandwith, max_number_of_blocks)
     
