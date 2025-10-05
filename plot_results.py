@@ -267,7 +267,7 @@ def plot_sample_size_impact_mallow(alpha,
     plt.suptitle(rf"Estimations against sample size (Mallow-selected block number), $(\alpha, \beta, \sigma^2, fixed bw)=$({alpha}, {beta}, {error_variance}, {default_bandwith})")
     plt.tight_layout()
 
-    plt.savefig('plot_sample_size_mallow_10_10.png')                                      # Save name
+    plt.savefig('plot_sample_size_mallow.png')                                      # Save name
 
 
 

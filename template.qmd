@@ -245,6 +245,8 @@ We observe that
 
 Let us now take a look at how the estimations behave against the sample size when the number of blocks (or similarly the size) is selected using Mallow's $C_p$ selection criterion. This is a reasonable way to compare the impact of sample sizes alone.
 
+We start by fixing $(\alpha,\beta)=(0.1, 0.2)$ to be in the situation we have already extensively discussed.
+
 We observe, as expected and previously observed, that small sample sized (even with optimal number of blocks) yield unreasonable estimations in comparison to the average. Moreover, the estimation of $h_{IMSE}$ appears to average around the value of $0.07$ after the elbow (see second figure for clear elbow). The estimation of $\sigma^2$ also becomes stable and converges to, it appears close to, $1.0$ (as expected). Furthermore, as already observed previously, the estimation of $\theta_{22}$ is relatively unstable / changes a lot.
 
 ![Estimations against sample size with Mallow-selected block number / size](plot_sample_size_mallow.png)
