@@ -1,7 +1,7 @@
 ---
 title: "MATH-517: Assignment 3"
 author: "Philipp Mayer"
-date: '2025-09-03'
+date: '2025-10-05'
 format: pdf
 editor: visual
 ---
@@ -181,7 +181,13 @@ We start off with a simple visualization of the setup for fixed $\alpha,\beta,n$
 
 ![Visual plot of bandwith impact, call of `py plot_results.py simple_plot 0.1 0.2 10000 0.2 1`](simple_plot_bandwith.png)
 
-This guides us with the belief that an optimal bandwith may have to be chosen close to zero, but not too close either (at least for these parameter choices).
+Here below is another plot, after calling `py plot_results.py simple_plot 10 10 10000 0.07 1`
+
+![Visual plot of bandwith impact, call of `py plot_results.py simple_plot 10 10 10000 0.07 1`](simple_plot_bandwith_10_10.png)
+
+*NB:* *Note that to produce these variations, one must directly change export name of the `.png` files.*
+
+-   The choice of $N$ should possibly depend on $\alpha,\beta$ (and $m$) as the concentrations of samples will vary in $[0,1]$. Given $m$ and depending on $N$, we may not be able to capture the volatility of $\theta_{22}$ accurately.
 
 Here below are heatmaps of the results of estimations of $h_{IMSE},\sigma^2,\theta_{22}$ against various values of $\alpha,\beta$. The $x$-axis represents $\beta$ and the $y$-axis represents $\alpha$. Here the alphas and betas are chosen in `np.arange(0.1, 10, step = 0.5)`. We observe what seems to be a boundary effect when either $\alpha$ or $\beta$ is close to zero on the estimation of $h_{IMSE}$ and $\theta_{22}$ in particular. For $h_{IMSE}$, when $\alpha$ or $\beta$ (or both) are close to zero, the values of $h_{IMSE}$ are of larger magnitude in comparison to the other cases. The inverted observation can be made for $\theta_{22}$'s estimation where the values are lower when $\alpha,\beta$ are close to zero in comparison to the other case.
 
@@ -213,11 +219,23 @@ As already mentioned, we think of number of blocks instead of size of blocks. As
 
 ![Impact of sample size and number of blocks on estimations (color map)](sample_size_block_number_impact_colormap.png)
 
-In conclusion,
+In conclusion, for this choice of $(\alpha,\beta)=(0.1, 0.2)$,
 
 -   As expected, the sample size positively increases the on-average consistency of the estimations.
 
--   The size of the blocks decreases (and the number of blocks increases) the estimations appear to become stable when $n$ (the sample size) is large enough.
+-   The size of the blocks decreases (and the number of blocks increases) the estimations appear to become stable when $n$ (the sample size) is large enough. However, this effect does not seem to be very pronounced as soon as the sample size is large enough.
+
+Consider the case where $(\alpha,\beta)=(10,10)$ below.
+
+![Impact of \$n\$ and \$N\$ when \$\\alpha,\\beta=10\$](sample_size_block_number_impact_colormap_10_10.png)
+
+We observe that
+
+-   Similarly to before, as $n$ increases, the estimations become more stable in comparison to the average.
+
+-   On the other hand, the choice of $N$ appears to impact the stability significantly (especially for $\theta_{22}$ and $h_{IMSE}$) in comparison to the previous case where $(\alpha,\beta)=(0.1, 0.2)$. $N$ will change significantly how the estimates are captured when the density of samples move (this is controlled by $\alpha,\beta$. We can deduce that $N$ should (or at least could) depend on $\alpha,\beta$.
+
+*NB:* *Note that to produce these variations, one must directly change export name of the `.png` files.*
 
 Let us now take a look at how the estimations behave against the sample size when the number of blocks (or similarly the size) is selected using Mallow's $C_p$ selection criterion. This is a reasonable way to compare the impact of sample sizes alone.
 
@@ -225,18 +243,12 @@ We observe, as expected and previously observed, that small sample sized (even w
 
 ![Estimations against sample size with Mallow-selected block number / size](plot_sample_size_mallow.png)
 
+For confirmation purposes, here is a version going up to $2000$ samples:
+
+![Mallow selected evolution up to 2000 samples](Mallow_evolution_2000.png)
+
 Here below is the call of `py plot_results.py simple_plot 0.1 0.2 10000 0.07 1` with the bandwith of $0.7$ mentioned below.
 
 ![Plot with bandwith of 0.7](simple_plot_bandwith_2.png)
 
 *NB:* *Note that to produce these variations, one must directly change export name of the `.png` files.*
-
-[Answers to suggested questions to address:]{.underline}
-
-1.  How does $h_{IMSE}$ evolve as $N$ grows and why could this be:
-
-2.  Should $N$ depend on $n$ and why:
-
-3.  What happens when the number of observations varies a lot between different regions in the support of $X$ and link to $\operatorname{Beta}(\alpha,\beta)$:
-
-MAYBE ANSWER IN TEXT OR NOT IN THE END... DID ENOUGH I THINK \^\^ (its optional cf. README)
