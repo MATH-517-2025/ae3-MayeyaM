@@ -257,4 +257,12 @@ Here below is the call of `py plot_results.py simple_plot 0.1 0.2 10000 0.07 1` 
 
 ![Plot with bandwith of 0.7](simple_plot_bandwith_2.png)
 
+Again, changing $\alpha,\beta$ produces significantly different results, as shown here below when calling `py plot_results.py sample_size_mallow_evolution 20 10 1000 10 1.0 0.1`, that is we let $(\alpha,\beta)=(20, 10)$:
+
+![Call of `py plot_results.py sample_size_mallow_evolution 20 10  1000 10 1.0 0.1`](plot_sample_size_mallow_20_10.png)
+
+This time on the other hand, the computation of $\theta_{22}$ becomes stable, the estimation of $\sigma^2$ is still relatively stable, closely around $1.0$. and $h_{IMSE}$ is estimated around $0.09$ after the elbow. $\theta_{22}$ is close to $10000$ after the computations stabilize.
+
+-   This again confirms the suspicion that $\alpha$, $\beta$ significantly impact $h_{IMSE}$ and the other estimations, especially $\theta_{22}$.
+
 *NB:* *Note that to produce these variations, one must directly change export name of the `.png` files.*
