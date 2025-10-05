@@ -107,6 +107,8 @@ The code should not appear in the PDF report, unless there is a specific reason 
 
 **Structure and details:**
 
+NB: To use the code, please read the section "[**How to simply plot results**]{.underline}". Each function is callable from the same `.py` file and terminal.
+
 [Aim of the simulation study:]{.underline}
 
 The goal is to observe the impact of various parameters on the estimation of the IMSE-optimal bandwith $h_{IMSE}, \sigma^2$ and $\theta_{22}$. In particular how it varies with respect to
@@ -115,11 +117,13 @@ The goal is to observe the impact of various parameters on the estimation of the
 
 -   various values (combinations) of sample size $n$ and block size / number of blocks $N$ (see below)
 
+    -   Do quantities depend on $\alpha,\beta$
+
+-   What happens when we select $N$ using Mallow $C_p$
+
 [Fixed quantities:]{.underline}
 
--   $\alpha,\beta>0$ are the parameters of the $\operatorname{Beta}$ distribution, they're are usually named `alpha` and `beta` in the code. We have a sample size $n$ and a number of blocks $N$, they're usually denoted descriptively, for example `sample_size` or `size` and `number_of_blocks`. Note that in the README, we consider the size of the blocks instead of the number \[???????????????????? what do i do s??????????????????????????\]
-
--   ADD IF NECESSARY
+-   $\alpha,\beta>0$ are the parameters of the $\operatorname{Beta}$ distribution, they're are usually named `alpha` and `beta` in the code. We have a sample size $n$ and a number of blocks $N$, they're usually denoted descriptively, for example `sample_size` or `size` and `number_of_blocks`. Note that in the README, we consider the size of the blocks instead of the number, but they are pretty much the same in this case. Usually we'll fix $\sigma^2$ to $1.0$ and $m$ (truth) is fixed.
 
 [Code architecture:]{.underline}
 
@@ -177,7 +181,7 @@ When a call is successful, the console will display `TASK:<followed by the actua
 
 **Findings and reports:**
 
-We start off with a simple visualization of the setup for fixed $\alpha,\beta,n$. The plot below showcases how different bandwith choices visually impact the fit. In orange is the true $m(x)$. In red is a (relatively good fitting) line. We observe that as the bandwith goes closer to zero, the fits become better. However, when to close to zero, the fitted function appears to be to sensible and does not provide a robust fit to the truth.
+We start off with a simple visualization of the setup for fixed $\alpha,\beta,n$. The plot below showcases how different bandwith choices visually impact the fit. In orange is the true $m(x)$. In red is a (relatively good fitting) line. We observe that as the bandwith goes closer to zero, the fits become better. However, when to close to zero (the bandwith), the fitted function appears to be to sensible and does not provide a robust fit to the truth.
 
 ![Visual plot of bandwith impact, call of `py plot_results.py simple_plot 0.1 0.2 10000 0.2 1`](simple_plot_bandwith.png)
 
@@ -199,7 +203,7 @@ To better emphasize on this boundary effect, we recomputed the heatmaps for $\al
 
 Note that in both cases, the estimations of $\sigma^2$ remain relatively stable between $0.8$ and $1.2$ approximately.
 
-To complete the observations around the impacts of $\alpha,\beta$ on the estimations, we perform a last run for $\alpha,\beta$ taking values in `np.arange(0.01, 1, step = 0.01)`. There, we observe a fade from the left and upper boundaries to the center for $\theta_{22}$, and a strong boundary effect on $h_{IMSE}$, as already expected. We additionally observe that the estimations of $h_{IMSE}$ remain very stable for values of $\alpha,\beta$ far enough from zero (both at the same time) and that the estimations of $\sigma^2$ are reasonably stable on average.
+To complete the observations around the impacts of $\alpha,\beta$ on the estimations, we perform a last run for $\alpha,\beta$ taking values in `np.arange(0.01, 1, step = 0.01)`. There, we observe a fade from the left and upper boundaries to the center for $\theta_{22}$, and a strong boundary effect on $h_{IMSE}$, as already expected. We additionally observe that the estimations of $h_{IMSE}$ remain stable for values of $\alpha,\beta$ far enough from zero (both at the same time) and that the estimations of $\sigma^2$ are reasonably stable on average, though very "white-noise" looking.
 
 ![Impact of the choices of alpha and beta with increased granularity and closer to zero](alpha_beta_impact_colormap_increased_granulariy_close_to_zero_3.png)
 
@@ -209,7 +213,7 @@ In conclusion,
 
 -   The estimation of $\sigma^2$ appears to not be affected a lot by changes of $\alpha,\beta$.
 
--   initial estimations are that $h_{IMSE}$ is around $0.2$ on average, $\sigma^2$ is, as expected, around $1.0$ and $\theta_{22}$ appears to be around $50000$ on average.
+-   initial estimations are that $h_{IMSE}$ is below $0.2$ on average, $\sigma^2$ is, as expected, around $1.0$ and $\theta_{22}$ appears to be around $50000$ on average.
 
 *NB:* *Note that to produce these variations, one must directly comment / uncomment parts of the code as well as change export name of the `.png` files. The default computation is made for values of* $\alpha,\beta$ *in `np.arange(0.1, 10, step = 0.5)`.*
 
@@ -235,11 +239,13 @@ We observe that
 
 -   On the other hand, the choice of $N$ appears to impact the stability significantly (especially for $\theta_{22}$ and $h_{IMSE}$) in comparison to the previous case where $(\alpha,\beta)=(0.1, 0.2)$. $N$ will change significantly how the estimates are captured when the density of samples move (this is controlled by $\alpha,\beta$. We can deduce that $N$ should (or at least could) depend on $\alpha,\beta$.
 
+-   In this case the number of blocks shouldn't "split" the data in heteroskedastic sub-samples. Data should be $i.i.d.$ for a LLN.
+
 *NB:* *Note that to produce these variations, one must directly change export name of the `.png` files.*
 
 Let us now take a look at how the estimations behave against the sample size when the number of blocks (or similarly the size) is selected using Mallow's $C_p$ selection criterion. This is a reasonable way to compare the impact of sample sizes alone.
 
-We observe, as expected and previously observed, that small sample sized (even with optimal number of blocks) yield unreasonable estimations in comparison to the average. Moreover, the estimation of $h_{IMSE}$ appears to average around the value of $0.07$ after the elbow. The estimation of $\sigma^2$ also becomes stable and converges to, it appears, $1.0$ (as expected). Furthermore, as already observed previously, the estimation of $\theta_{22}$ is relatively unstable.
+We observe, as expected and previously observed, that small sample sized (even with optimal number of blocks) yield unreasonable estimations in comparison to the average. Moreover, the estimation of $h_{IMSE}$ appears to average around the value of $0.07$ after the elbow (see second figure for clear elbow). The estimation of $\sigma^2$ also becomes stable and converges to, it appears close to, $1.0$ (as expected). Furthermore, as already observed previously, the estimation of $\theta_{22}$ is relatively unstable / changes a lot.
 
 ![Estimations against sample size with Mallow-selected block number / size](plot_sample_size_mallow.png)
 
@@ -247,7 +253,7 @@ For confirmation purposes, here is a version going up to $2000$ samples:
 
 ![Mallow selected evolution up to 2000 samples](Mallow_evolution_2000.png)
 
-Here below is the call of `py plot_results.py simple_plot 0.1 0.2 10000 0.07 1` with the bandwith of $0.7$ mentioned below.
+Here below is the call of `py plot_results.py simple_plot 0.1 0.2 10000 0.07 1` with the bandwith of $0.7$ mentioned above.
 
 ![Plot with bandwith of 0.7](simple_plot_bandwith_2.png)
 
